@@ -1,45 +1,41 @@
 package service;
 
 import model.Food;
+import model.Discountable;
 
 public class ShoppingCart {
+    private Food[] items;
 
-    private Food[] arrayFood;
-
-    public ShoppingCart(Food[] arrayFood){
-        this.arrayFood = arrayFood;
+    public ShoppingCart(Food[] items) {
+        this.items = items;
     }
 
-    private double сounterPriceNotDiscount;
-    public double amountNotDiscount(){
-        for(int i = 0; i < arrayFood.length; i++){
-            сounterPriceNotDiscount = сounterPriceNotDiscount + arrayFood[i].getPrice();
+    public double getTotalWithoutDiscount() {
+        double total = 0;
+        for (Food item : items) {
+            total += item.getAmount() * item.getPrice();
         }
-        return сounterPriceNotDiscount;
+        return total;
     }
 
-    private double сounterPriceWithDiscount;
-    public double amountAllPriceWithDiscount(){
-        for(int i = 0; i < arrayFood.length; i++){
-            double price = arrayFood[i].getPrice();
-            double discountable = arrayFood[i].getDiscount();
-            if (discountable == 0){
-                сounterPriceWithDiscount = сounterPriceWithDiscount + price;
-            } else{
-                сounterPriceWithDiscount = сounterPriceWithDiscount + price - ((price/100)*discountable);
+    public double getTotalWithDiscount() {
+        double total = 0;
+        for (Food item : items) {
+            double itemTotal = item.getAmount() * item.getPrice();
+            double discount = item instanceof Discountable ? ((Discountable) item).getDiscount() * itemTotal : 0;
+            total += itemTotal - discount;
+        }
+        return total;
+    }
+
+    public double getTotalVegetarianWithoutDiscount() {
+        double total = 0;
+        for (Food item : items) {
+            if (item.isVegetarian()) {
+                total += item.getAmount() * item.getPrice();
             }
         }
-        return сounterPriceWithDiscount;
+        return total;
     }
-
-    private double counterAllVegetarianProduct;
-    public double amountAllVegetarianProduct() {
-        for (int i = 0; i < arrayFood.length; i++) {
-            if (arrayFood[i].isVegetarian() == true) {
-                counterAllVegetarianProduct = counterAllVegetarianProduct + arrayFood[i].getPrice();
-            }
-        }
-        return counterAllVegetarianProduct;
-    }
-
 }
+

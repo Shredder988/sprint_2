@@ -3,25 +3,20 @@ package model;
 import model.constants.Colour;
 import model.constants.Discount;
 
-public class Apple extends Food{
+public class Apple extends Food implements Discountable {
+    private String colour; // цвет яблок
 
-    private String colour;
-
-    public Apple(int amount, int price, String colour){
-        super(amount, price, true);
-        this.colour=colour;
+    public Apple(int amount, double price, String colour) {
+        super(amount, price);
+        this.colour = colour;
+        this.isVegetarian = true; // Яблоки являются вегетарианскими продуктами
     }
 
     @Override
-    public double getDiscount(){
-        if(colour.equals(Colour.RED)){
-            return Discount.SIXTY_PERCENT;
-        } else {
-            return 0;
+    public double getDiscount() {
+        if (colour.equals(Colour.RED)) {
+            return Discount.RED_APPLE_DISCOUNT;
         }
-    }
-
-    public String getColour(){
-        return colour;
+        return 0;
     }
 }
