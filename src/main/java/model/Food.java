@@ -1,13 +1,14 @@
 package model;
 
 public abstract class Food {
-    private int amount; // количество продукта в килограммах
-    private double price; // цена за единицу
-    protected boolean isVegetarian; // флаг вегетарианства
+    protected int amount;
+    protected double price;
+    protected boolean isVegetarian;
 
-    protected Food(int amount, double price) {
+    protected Food(int amount, double price, boolean isVegetarian) {
         this.amount = amount;
         this.price = price;
+        this.isVegetarian = isVegetarian;
     }
 
     public int getAmount() {

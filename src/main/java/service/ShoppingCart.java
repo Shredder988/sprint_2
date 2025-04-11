@@ -1,7 +1,6 @@
 package service;
-
-import model.Food;
 import model.Discountable;
+import model.Food;
 
 public class ShoppingCart {
     private Food[] items;
@@ -10,7 +9,7 @@ public class ShoppingCart {
         this.items = items;
     }
 
-    public double getTotalWithoutDiscount() {
+    public double getTotalPriceWithoutDiscount() {
         double total = 0;
         for (Food item : items) {
             total += item.getAmount() * item.getPrice();
@@ -18,17 +17,20 @@ public class ShoppingCart {
         return total;
     }
 
-    public double getTotalWithDiscount() {
+    public double getTotalPriceWithDiscount() {
         double total = 0;
         for (Food item : items) {
-            double itemTotal = item.getAmount() * item.getPrice();
-            double discount = item instanceof Discountable ? ((Discountable) item).getDiscount() * itemTotal : 0;
-            total += itemTotal - discount;
+            double discount = 0;
+            if (item instanceof Discountable) {
+                discount = ((Discountable) item).getDiscount();
+            }
+            double priceAfterDiscount = item.getPrice() * (1 - discount / 100);
+            total += item.getAmount() * priceAfterDiscount;
         }
         return total;
     }
 
-    public double getTotalVegetarianWithoutDiscount() {
+    public double getTotalVegetarianPrice() {
         double total = 0;
         for (Food item : items) {
             if (item.isVegetarian()) {
